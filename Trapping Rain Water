@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+int trap(int* height, int heightSize) {
+    if (heightSize == 0) return 0;
+
+    int LM[heightSize];
+    int RM[heightSize];
+
+    int max = 0;
+    for (int i = 0; i < heightSize; i++) {
+        if (max < height[i])
+            max = height[i];
+        LM[i] = max;
+    }
+
+    max = 0;
+    for (int i = heightSize - 1; i >= 0; i--) {
+        if (max < height[i])
+            max = height[i];
+        RM[i] = max;
+    }
+
+    int water = 0;
+    for (int i = 0; i < heightSize; i++) {
+        int minHeight = (LM[i] < RM[i]) ? LM[i] : RM[i];
+        water += minHeight - height[i];
+    }
+
+    return water;
+}
+
+int main() {
+    int height[] = {0,1,0,2,1,0,1,3,2,1,2,1};
+    int size = sizeof(height) / sizeof(height[0]);
+    printf("Trapped water: %d\n", trap(height, size));
+    return 0;
+}
